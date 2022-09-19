@@ -6,7 +6,7 @@ Build Tool: <b>Maven</b></br>
 Test Framework: <b>JUnit 5</b></br>
 API Test Library: <b>RestAssured</b>
 
-#### Solution Description
+### Solution Description
 The test suite is developed on top of JUnit 5 framework.</br>
 * It supports advanced annotations
 * Parallel execution is possible
@@ -26,7 +26,7 @@ Two ways of creating string json request,
 1. Through POJO class
 2. Through string substitution of json content read from json file
 
-#### Files
+### Files
 test.properties -- Maintained the configurable parts like baseURL, API operations path and bearer token. If there are any change in URL, path or
 bearer token, the value can be changed only in the properties file and there will not be any change needed at other places.
 
@@ -53,8 +53,8 @@ junit-platform.properties -- To execute JUnit test in parallel.
 
 pom.xml -- To define the maven project, dependencies and plugins.
 
-#### Run Test Suite
-##### To execute from maven
+### Run Test Suite
+#### To execute from maven
 1. Clone the repository
 
 	git clone https://github.com/ramachandranrajasekaran/hotel-booking-api-test-suite.git
