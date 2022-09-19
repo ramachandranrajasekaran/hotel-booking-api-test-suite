@@ -60,13 +60,13 @@ public class ResourceUtil {
      * @return String the json string after conversion
      */
     public static String getJsonString(Object object) {
-    	JsonMapper mapper = new JsonMapper();
-    	String requestBody = null;
-    	try {
-    		requestBody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-    	return requestBody;
+        JsonMapper mapper = new JsonMapper();
+        String requestBody = null;
+        try {
+            requestBody = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return requestBody;
     }
 }

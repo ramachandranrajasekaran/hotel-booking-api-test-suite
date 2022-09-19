@@ -22,7 +22,7 @@ public class RestRequestHelper {
                 .header("Authorization", "Bearer " + bearerToken)
                 .get(url);
     }
-    
+
     /**
      * This method send GET REST request without query params and auth
      * 
@@ -51,7 +51,7 @@ public class RestRequestHelper {
                 .queryParam(param, value)
                 .get(url);
     }
-    
+
     /**
      * This method send GET REST request with multiple query params
      * @param url the URL to send REST request to
@@ -77,7 +77,7 @@ public class RestRequestHelper {
                 .body(body)
                 .post(url);
     }
-    
+
     /**
      * This method send POST REST request
      * @param url the URL to send REST request to
@@ -92,7 +92,7 @@ public class RestRequestHelper {
                 .body(body)
                 .post(url);
     }
-    
+
     /**
      * This method send PATCH REST request
      * @param url the URL to send REST request to
@@ -107,7 +107,7 @@ public class RestRequestHelper {
                 .body(body)
                 .patch(url);
     }
-    
+
     /**
      * This method send DELETE REST request
      * 

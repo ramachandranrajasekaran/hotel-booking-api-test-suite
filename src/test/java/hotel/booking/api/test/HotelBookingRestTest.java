@@ -35,208 +35,208 @@ import io.restassured.response.Response;
 @TestInstance(Lifecycle.PER_CLASS)
 public class HotelBookingRestTest {
 
-	private static Logger logger = LoggerFactory.getLogger(HotelBookingRestTest.class);
+    private static Logger logger = LoggerFactory.getLogger(HotelBookingRestTest.class);
 
-	private Properties properties;
-	private HotelBookingRestOperations operations;
-	private String bearerToken;
+    private Properties properties;
+    private HotelBookingRestOperations operations;
+    private String bearerToken;
 
-	/**
-	 * Read the test properties. Initialize the HotelBookingRestOperations. Get
-	 * BearerToken and set the variable for future requests. Verify the get bearer
-	 * token request is successful.
-	 */
-	@BeforeAll
-	public void setup() {
-		properties = ResourceUtil.getProperties();
-		operations = new HotelBookingRestOperations(properties);
-		logger.info("Before class setup done successfully");
-	}
+    /**
+     * Read the test properties. Initialize the HotelBookingRestOperations. Get
+     * BearerToken and set the variable for future requests. Verify the get bearer
+     * token request is successful.
+     */
+    @BeforeAll
+    public void setup() {
+        properties = ResourceUtil.getProperties();
+        operations = new HotelBookingRestOperations(properties);
+        logger.info("Before class setup done successfully");
+    }
 
-	@AfterAll
-	public void tearDown() {
-		properties = null;
-		operations = null;
-		bearerToken = null;
-		logger.info("Teared down test setup");
-	}
+    @AfterAll
+    public void tearDown() {
+        properties = null;
+        operations = null;
+        bearerToken = null;
+        logger.info("Teared down test setup");
+    }
 
-	@BeforeEach
-	public void setAuthToken() {
-		Response response = operations.getBearerToken(properties.getProperty(USERNAME),
-				properties.getProperty(PASSWORD));
-		assertEquals(response.statusCode(), 200);
-		JsonPath responseBody = response.jsonPath();
-		bearerToken = responseBody.get("token");
-		logger.info("Auth token retrieved successfully");
-	}
+    @BeforeEach
+    public void setAuthToken() {
+        Response response = operations.getBearerToken(properties.getProperty(USERNAME),
+                properties.getProperty(PASSWORD));
+        assertEquals(response.statusCode(), 200);
+        JsonPath responseBody = response.jsonPath();
+        bearerToken = responseBody.get("token");
+        logger.info("Auth token retrieved successfully");
+    }
 
-	@Test
-	@DisplayName("Test to verify the successful Create Booking")
-	public void createAndVerifyBooking() {
-		logger.info("Started execution - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
+    @Test
+    @DisplayName("Test to verify the successful Create Booking")
+    public void createAndVerifyBooking() {
+        logger.info("Started execution - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
 
-		Response response = operations.createBooking("Dan", "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
-				bearerToken);
-		assertEquals(response.statusCode(), 200);
-		JsonPath responseBody = response.jsonPath();
-		if (logger.isDebugEnabled()) {
-			logger.debug("responseBody : {}", responseBody.prettyPrint());
-		}
-		
-		assertAll(() -> assertNotNull(responseBody.get("bookingid")),
-				() -> assertEquals("Dan", responseBody.get("booking.firstname")),
-				() -> assertEquals("Brown", responseBody.get("booking.lastname")),
-				() -> assertEquals((Integer) 111, responseBody.get("booking.totalprice")),
-				() -> assertEquals(true, responseBody.get("booking.depositpaid")),
-				() -> assertEquals("2019-01-01", responseBody.get("booking.bookingdates.checkin")),
-				() -> assertEquals("2020-01-01", responseBody.get("booking.bookingdates.checkout")),
-				() -> assertEquals("Breakfast", responseBody.get("booking.additionalneeds")));
+        Response response = operations.createBooking("Dan", "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
+                bearerToken);
+        assertEquals(response.statusCode(), 200);
+        JsonPath responseBody = response.jsonPath();
+        if (logger.isDebugEnabled()) {
+            logger.debug("responseBody : {}", responseBody.prettyPrint());
+        }
 
-		logger.info("Execution completed - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
-	}
+        assertAll(() -> assertNotNull(responseBody.get("bookingid")),
+                () -> assertEquals("Dan", responseBody.get("booking.firstname")),
+                () -> assertEquals("Brown", responseBody.get("booking.lastname")),
+                () -> assertEquals((Integer) 111, responseBody.get("booking.totalprice")),
+                () -> assertEquals(true, responseBody.get("booking.depositpaid")),
+                () -> assertEquals("2019-01-01", responseBody.get("booking.bookingdates.checkin")),
+                () -> assertEquals("2020-01-01", responseBody.get("booking.bookingdates.checkout")),
+                () -> assertEquals("Breakfast", responseBody.get("booking.additionalneeds")));
 
-	@Test
-	@DisplayName("Test to verify the Get Booking Ids to list all booking id's")
-	public void getAndVerifyBookingById() {
-		logger.info("Started execution - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
+        logger.info("Execution completed - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
 
-		Response response = operations.getBookingIds();
-		assertEquals(response.statusCode(), 200);
-		JsonPath responseBody = response.jsonPath();
-		if(logger.isDebugEnabled()) {
-			logger.debug("responseBody : {}", responseBody.prettyPrint());
-		}
-		assertNotNull(responseBody);
+    @Test
+    @DisplayName("Test to verify the Get Booking Ids to list all booking id's")
+    public void getAndVerifyBookingById() {
+        logger.info("Started execution - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
 
-		logger.info("Execution completed - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
-	}
+        Response response = operations.getBookingIds();
+        assertEquals(response.statusCode(), 200);
+        JsonPath responseBody = response.jsonPath();
+        if(logger.isDebugEnabled()) {
+            logger.debug("responseBody : {}", responseBody.prettyPrint());
+        }
+        assertNotNull(responseBody);
 
-	@Test
-	@DisplayName("Test to verify the successful Partial Update Booking")
-	public void verifyPartialUpdateBooking() {
-		logger.info("Started execution - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
+        logger.info("Execution completed - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
 
-		Response response = operations.createBooking("Dan", "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
-				bearerToken);
-		assertEquals(response.statusCode(), 200);
-		JsonPath responseBody = response.jsonPath();
-		Integer bookingId = (Integer) responseBody.get("bookingid");
+    @Test
+    @DisplayName("Test to verify the successful Partial Update Booking")
+    public void verifyPartialUpdateBooking() {
+        logger.info("Started execution - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
 
-		Response partialUpdateBookingResponse = operations.partialUpdateBooking(bookingId, "James", "Bond",
-				bearerToken);
-		assertEquals(partialUpdateBookingResponse.statusCode(), 200);
-		if (logger.isDebugEnabled()) {
-			logger.debug("partialUpdateBookingResponse: {}", partialUpdateBookingResponse.asPrettyString());
-		}
-		JsonPath partialUpdateBookingResponseBody = partialUpdateBookingResponse.jsonPath();
+        Response response = operations.createBooking("Dan", "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
+                bearerToken);
+        assertEquals(response.statusCode(), 200);
+        JsonPath responseBody = response.jsonPath();
+        Integer bookingId = (Integer) responseBody.get("bookingid");
 
-		assertAll(() -> assertEquals("James", partialUpdateBookingResponseBody.get("firstname")),
-				() -> assertEquals("Bond", partialUpdateBookingResponseBody.get("lastname")),
-				() -> assertEquals((Integer) 111, partialUpdateBookingResponseBody.get("totalprice")),
-				() -> assertEquals(true, partialUpdateBookingResponseBody.get("depositpaid")),
-				() -> assertEquals("2019-01-01", partialUpdateBookingResponseBody.get("bookingdates.checkin")),
-				() -> assertEquals("2020-01-01", partialUpdateBookingResponseBody.get("bookingdates.checkout")),
-				() -> assertEquals("Breakfast", partialUpdateBookingResponseBody.get("additionalneeds")));
+        Response partialUpdateBookingResponse = operations.partialUpdateBooking(bookingId, "James", "Bond",
+                bearerToken);
+        assertEquals(partialUpdateBookingResponse.statusCode(), 200);
+        if (logger.isDebugEnabled()) {
+            logger.debug("partialUpdateBookingResponse: {}", partialUpdateBookingResponse.asPrettyString());
+        }
+        JsonPath partialUpdateBookingResponseBody = partialUpdateBookingResponse.jsonPath();
 
-		logger.info("Execution completed - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
-	}
+        assertAll(() -> assertEquals("James", partialUpdateBookingResponseBody.get("firstname")),
+                () -> assertEquals("Bond", partialUpdateBookingResponseBody.get("lastname")),
+                () -> assertEquals((Integer) 111, partialUpdateBookingResponseBody.get("totalprice")),
+                () -> assertEquals(true, partialUpdateBookingResponseBody.get("depositpaid")),
+                () -> assertEquals("2019-01-01", partialUpdateBookingResponseBody.get("bookingdates.checkin")),
+                () -> assertEquals("2020-01-01", partialUpdateBookingResponseBody.get("bookingdates.checkout")),
+                () -> assertEquals("Breakfast", partialUpdateBookingResponseBody.get("additionalneeds")));
 
-	@Test
-	@DisplayName("Test to verify the successful Delete Booking")
-	public void verifyDeleteBooking() {
-		logger.info("Started execution - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
+        logger.info("Execution completed - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
 
-		Response response = operations.createBooking("Dan", "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
-				bearerToken);
-		assertEquals(response.statusCode(), 200);
-		JsonPath responseBody = response.jsonPath();
-		Integer bookingId = (Integer) responseBody.get("bookingid");
+    @Test
+    @DisplayName("Test to verify the successful Delete Booking")
+    public void verifyDeleteBooking() {
+        logger.info("Started execution - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
 
-		Response deleteBookingResponse = operations.deleteBooking(bookingId, bearerToken);
-		assertEquals(deleteBookingResponse.statusCode(), 201);
-		if (logger.isDebugEnabled()) {
-			logger.debug("deleteBookingResponse: {}", deleteBookingResponse.asPrettyString());
-		}
-		assertEquals("Created", deleteBookingResponse.asPrettyString());
+        Response response = operations.createBooking("Dan", "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
+                bearerToken);
+        assertEquals(response.statusCode(), 200);
+        JsonPath responseBody = response.jsonPath();
+        Integer bookingId = (Integer) responseBody.get("bookingid");
 
-		logger.info("Execution completed - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
-	}
+        Response deleteBookingResponse = operations.deleteBooking(bookingId, bearerToken);
+        assertEquals(deleteBookingResponse.statusCode(), 201);
+        if (logger.isDebugEnabled()) {
+            logger.debug("deleteBookingResponse: {}", deleteBookingResponse.asPrettyString());
+        }
+        assertEquals("Created", deleteBookingResponse.asPrettyString());
 
-	@Test
-	@DisplayName("Test to verify the get booking ids with params filtering")
-	public void verifyGetBookingByIdWithParams() {
-		logger.info("Started execution - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
+        logger.info("Execution completed - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
 
-		String firstName = UUID.randomUUID().toString();
-		String lastName = UUID.randomUUID().toString();
+    @Test
+    @DisplayName("Test to verify the get booking ids with params filtering")
+    public void verifyGetBookingByIdWithParams() {
+        logger.info("Started execution - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
 
-		Response response = operations.createBooking(firstName, lastName, 111, true, "2019-01-01", "2020-01-01",
-				"Breakfast", bearerToken);
-		assertEquals(response.statusCode(), 200);
-		JsonPath responseBody = response.jsonPath();
-		Integer bookingId = (Integer) responseBody.get("bookingid");
+        String firstName = UUID.randomUUID().toString();
+        String lastName = UUID.randomUUID().toString();
 
-		Map<String, Object> params = new HashMap<>();
-		params.put("firstname", firstName);
-		params.put("lastname", lastName);
+        Response response = operations.createBooking(firstName, lastName, 111, true, "2019-01-01", "2020-01-01",
+                "Breakfast", bearerToken);
+        assertEquals(response.statusCode(), 200);
+        JsonPath responseBody = response.jsonPath();
+        Integer bookingId = (Integer) responseBody.get("bookingid");
 
-		Response getBookingIdResponse = operations.getBookingIds(params);
-		assertEquals(getBookingIdResponse.statusCode(), 200);
-		if (logger.isDebugEnabled()) {
-			logger.debug("getBookingIdResponse: {}", getBookingIdResponse.asPrettyString());
-		}
+        Map<String, Object> params = new HashMap<>();
+        params.put("firstname", firstName);
+        params.put("lastname", lastName);
 
-		JsonPath getBookingResponseBody = response.jsonPath();
-		assertEquals(bookingId, getBookingResponseBody.get("bookingid"));
+        Response getBookingIdResponse = operations.getBookingIds(params);
+        assertEquals(getBookingIdResponse.statusCode(), 200);
+        if (logger.isDebugEnabled()) {
+            logger.debug("getBookingIdResponse: {}", getBookingIdResponse.asPrettyString());
+        }
 
-		logger.info("Execution completed - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
-	}
+        JsonPath getBookingResponseBody = response.jsonPath();
+        assertEquals(bookingId, getBookingResponseBody.get("bookingid"));
 
-	@Test
-	@DisplayName("Test to verify the failure case when firstname is null in Create Booking")
-	public void createAndVerifyBookingWithNullFirstName() {
-		logger.info("Started execution - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
+        logger.info("Execution completed - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
 
-		Response response = operations.createBooking(null, "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
-				bearerToken);
-		assertEquals(response.statusCode(), 400);
-		if (logger.isDebugEnabled()) {
-			logger.debug("responseBody : {}", response.prettyPrint());
-		}
-		assertEquals("Bad Request", response.asPrettyString());
+    @Test
+    @DisplayName("Test to verify the failure case when firstname is null in Create Booking")
+    public void createAndVerifyBookingWithNullFirstName() {
+        logger.info("Started execution - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
 
-		logger.info("Execution completed - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
-	}
-	
-	@Test
-	@DisplayName("Test to verify the failed Delete Booking when booking id is not in the record")
-	public void verifyDeleteBookingWithInvalidBookingId() {
-		logger.info("Started execution - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
+        Response response = operations.createBooking(null, "Brown", 111, true, "2019-01-01", "2020-01-01", "Breakfast",
+                bearerToken);
+        assertEquals(response.statusCode(), 400);
+        if (logger.isDebugEnabled()) {
+            logger.debug("responseBody : {}", response.prettyPrint());
+        }
+        assertEquals("Bad Request", response.asPrettyString());
 
-		Integer bookingId = 98768789;
-		Response deleteBookingResponse = operations.deleteBooking(bookingId, bearerToken);
-		assertEquals(deleteBookingResponse.statusCode(), 404);
-		if (logger.isDebugEnabled()) {
-			logger.debug("deleteBookingResponse: {}", deleteBookingResponse.asPrettyString());
-		}
-		assertEquals("Not Found", deleteBookingResponse.asPrettyString());
+        logger.info("Execution completed - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
 
-		logger.info("Execution completed - {} {}", this.getClass().getName(),
-				Thread.currentThread().getStackTrace()[1].getMethodName());
-	}
+    @Test
+    @DisplayName("Test to verify the failed Delete Booking when booking id is not in the record")
+    public void verifyDeleteBookingWithInvalidBookingId() {
+        logger.info("Started execution - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        Integer bookingId = 98768789;
+        Response deleteBookingResponse = operations.deleteBooking(bookingId, bearerToken);
+        assertEquals(deleteBookingResponse.statusCode(), 404);
+        if (logger.isDebugEnabled()) {
+            logger.debug("deleteBookingResponse: {}", deleteBookingResponse.asPrettyString());
+        }
+        assertEquals("Not Found", deleteBookingResponse.asPrettyString());
+
+        logger.info("Execution completed - {} {}", this.getClass().getName(),
+                Thread.currentThread().getStackTrace()[1].getMethodName());
+    }
 
 }

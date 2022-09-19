@@ -39,12 +39,12 @@ public class HotelBookingRestOperations {
      * @return Response of the Rest Assured request
      */
     public Response getBearerToken(String username, String password) {
-    	String bearerTokenRequestBody = ResourceUtil.getRequest("bearerToken.json");
-    	bearerTokenRequestBody = String.format(bearerTokenRequestBody, username, password);
+        String bearerTokenRequestBody = ResourceUtil.getRequest("bearerToken.json");
+        bearerTokenRequestBody = String.format(bearerTokenRequestBody, username, password);
 
-    	logger.debug("Bearer Token Request URL: {}", getUrl(BEARER_TOKEN));
-    	logger.debug("Bearer Token Request Body: {}", bearerTokenRequestBody);
-    	return RestRequestHelper.postRequest(getUrl(BEARER_TOKEN), bearerTokenRequestBody);
+        logger.debug("Bearer Token Request URL: {}", getUrl(BEARER_TOKEN));
+        logger.debug("Bearer Token Request Body: {}", bearerTokenRequestBody);
+        return RestRequestHelper.postRequest(getUrl(BEARER_TOKEN), bearerTokenRequestBody);
     }
 
     /**
@@ -61,26 +61,26 @@ public class HotelBookingRestOperations {
      * @return Response of the Rest Assured request
      */
     public Response createBooking(String firstName, String lastName, int totalPrice, boolean depositPaid,
-    		String checkIn, String checkOut, String additionalNeeds, String bearerToken) {
-    	logger.debug("CreateBooking URL: {}", getUrl(CREATE_BOOKING));
-    	BookingDates bookingDates = new BookingDates(checkIn, checkOut);
-    	CreateBooking createBooking = new CreateBooking(firstName, lastName, totalPrice, depositPaid, bookingDates, additionalNeeds);
-    	String createBookingBody = ResourceUtil.getJsonString(createBooking);
+            String checkIn, String checkOut, String additionalNeeds, String bearerToken) {
+        logger.debug("CreateBooking URL: {}", getUrl(CREATE_BOOKING));
+        BookingDates bookingDates = new BookingDates(checkIn, checkOut);
+        CreateBooking createBooking = new CreateBooking(firstName, lastName, totalPrice, depositPaid, bookingDates, additionalNeeds);
+        String createBookingBody = ResourceUtil.getJsonString(createBooking);
 
-    	logger.debug("Create Booking Request Body: {}", createBookingBody);
-    	return RestRequestHelper.postRequest(getUrl(CREATE_BOOKING), createBookingBody, bearerToken);
+        logger.debug("Create Booking Request Body: {}", createBookingBody);
+        return RestRequestHelper.postRequest(getUrl(CREATE_BOOKING), createBookingBody, bearerToken);
     }
-    
+
     /**
      * The operation to get all the booking id's from the application.
      * 
      * @return Response of the Rest Assured request
      */
     public Response getBookingIds() {
-    	logger.debug("CreateBooking URL: {}", getUrl(GET_BOOKING_IDS));
-    	return RestRequestHelper.getRequest(getUrl(GET_BOOKING_IDS));
+        logger.debug("CreateBooking URL: {}", getUrl(GET_BOOKING_IDS));
+        return RestRequestHelper.getRequest(getUrl(GET_BOOKING_IDS));
     }
-    
+
     /**
      * The operation to get the booking id's based on the params passed. The params are passed to
      * filter the booking id's.
@@ -89,10 +89,10 @@ public class HotelBookingRestOperations {
      * @return Response of the Rest Assured request
      */
     public Response getBookingIds(Map<String, Object> params) {
-    	logger.debug("CreateBooking URL: {}", getUrl(GET_BOOKING_IDS));
-    	return RestRequestHelper.getRequest(getUrl(GET_BOOKING_IDS), params);
+        logger.debug("CreateBooking URL: {}", getUrl(GET_BOOKING_IDS));
+        return RestRequestHelper.getRequest(getUrl(GET_BOOKING_IDS), params);
     }
-    
+
     /**
      * The operation to update partial update booking. The request body is generated from the
      * partialUpdateBooking.json file read from resources 'request' folder and substitute the
@@ -105,15 +105,15 @@ public class HotelBookingRestOperations {
      * @return Response of the Rest Assured request
      */
     public Response partialUpdateBooking(Integer bookingId, String firstName, String lastName, String bearerToken) {
-    	String url = getUrl(PARTIAL_UPDATE_BOOKING) + bookingId.toString();
-    	logger.debug("Partial Update Booking URL {}", url);
-    	
-    	String updateBookingRequestBody = ResourceUtil.getRequest("partialUpdateBooking.json");
-    	updateBookingRequestBody = String.format(updateBookingRequestBody, firstName, lastName);
-        
-    	return RestRequestHelper.patchRequest(url, updateBookingRequestBody, bearerToken);
+        String url = getUrl(PARTIAL_UPDATE_BOOKING) + bookingId.toString();
+        logger.debug("Partial Update Booking URL {}", url);
+
+        String updateBookingRequestBody = ResourceUtil.getRequest("partialUpdateBooking.json");
+        updateBookingRequestBody = String.format(updateBookingRequestBody, firstName, lastName);
+
+        return RestRequestHelper.patchRequest(url, updateBookingRequestBody, bearerToken);
     }
-    
+
     /**
      * The operation to delete booking based on the bookingId.
      * 
@@ -122,10 +122,10 @@ public class HotelBookingRestOperations {
      * @return Response of the Rest Assured request
      */
     public Response deleteBooking(Integer bookingId, String bearerToken) {
-    	String url = getUrl(DELETE_BOOKING) + bookingId.toString();
-    	logger.debug("Partial Update Booking URL {}", url);
-        
-    	return RestRequestHelper.deleteRequest(url, bearerToken);
+        String url = getUrl(DELETE_BOOKING) + bookingId.toString();
+        logger.debug("Partial Update Booking URL {}", url);
+
+        return RestRequestHelper.deleteRequest(url, bearerToken);
     }
 
     /**
