@@ -264,4 +264,7 @@ Below is the output after executing the test suite through maven,
 	[INFO] ------------------------------------------------------------------------
 
 
-NOTE: The emailable report will be generate 'target/site/surefire-report.html'.
+The emailable report will be generate 'target/site/surefire-report.html'.
+
+NOTE: There are two failure in the above test cases, the failure is due to the mismatch in response code sent by the application. This is the expected behavior, since there is bug in the application.
+ 
