@@ -1,0 +1,11 @@
+{
+    "firstname" : %s,
+    "lastname" : %s,
+    "totalprice" : %s,
+    "depositpaid" : %s,
+    "bookingdates" : {
+        "checkin" : %s,
+        "checkout" : %s
+    },
+    "additionalneeds" : %s
+}
