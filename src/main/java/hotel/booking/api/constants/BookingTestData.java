@@ -20,5 +20,6 @@ public class BookingTestData {
 	public static final int UPDATE_TOTAL_PRICE = Integer.parseInt(ConfigManager.getInstance().getProperty("updateTotalPrice"));
 	
 	public static final String DELETE_BOOKING_RESPONSE = "Created";
+	public static final String DELETE_BOOKING_FAILURE_RESPONSE = "Method Not Allowed";
 
 }

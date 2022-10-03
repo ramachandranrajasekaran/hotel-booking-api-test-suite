@@ -12,17 +12,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import hotel.booking.api.fixtures.HotelBookingFixture;
 import hotel.booking.api.model.Booking;
 import hotel.booking.api.model.Token;
 
 public class TestUpdateBooking extends HotelBookingFixture {
 	
 	@Test
-	public void testGetAllBookingIds() {
-		int bookingId = bookingHelper.createBooking(booking).getBookingid();
+	public void testUpdateBooking() {
+		int bookingId = bookingHelper.createBooking(booking, true).getBookingid();
 		Token token = bookingHelper.getToken(tokenAuth);
 		
-		Booking bookingFetched = bookingHelper.updateBooking(bookingId, updateBooking, token);
+		Booking bookingFetched = bookingHelper.updateBooking(bookingId, updateBooking, token, true);
 		assertAll(
 				() -> assertEquals(UPDATE_FIRSTNAME, bookingFetched.getFirstname()),
 				() -> assertEquals(UPDATE_LASTNAME, bookingFetched.getLastname()),
@@ -32,6 +33,14 @@ public class TestUpdateBooking extends HotelBookingFixture {
 				() -> assertEquals(CHECK_IN, bookingFetched.getBookingdates().getCheckin()),
 				() -> assertEquals(CHECK_OUT, bookingFetched.getBookingdates().getCheckout())
 				);
+	}
+	
+	@Test
+	public void testUpdateBookingWithInvalidData() {
+		int bookingId = bookingHelper.createBooking(booking, true).getBookingid();
+		Token token = bookingHelper.getToken(tokenAuth);
+		Booking invalidUpdateBooking = new Booking();
+		bookingHelper.updateBooking(bookingId, invalidUpdateBooking, token, false);
 	}
 
 }

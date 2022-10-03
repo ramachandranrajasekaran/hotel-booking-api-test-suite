@@ -1,4 +1,4 @@
-package hotel.booking.api.tests;
+package hotel.booking.api.fixtures;
 
 import static hotel.booking.api.constants.BookingTestData.ADDITIONAL_NEEDS;
 import static hotel.booking.api.constants.BookingTestData.CHECK_IN;
@@ -17,6 +17,7 @@ import hotel.booking.api.helpers.BookingHelper;
 import hotel.booking.api.model.Booking;
 import hotel.booking.api.model.Bookingdates;
 import hotel.booking.api.model.TokenAuth;
+import io.qameta.allure.Step;
 
 public class HotelBookingFixture {
 	
@@ -33,7 +34,8 @@ public class HotelBookingFixture {
 		updateBooking();
 		partialUpdateBooking();
 	}
-	
+
+	@Step("Config and test data setup")
 	private void init() {
 		bookingHelper = new BookingHelper();
 		booking = new Booking();
@@ -75,4 +77,5 @@ public class HotelBookingFixture {
 		tokenAuth.setUsername(USERNAME);
 		tokenAuth.setPassword(PASSWORD);
 	}
+	
 }

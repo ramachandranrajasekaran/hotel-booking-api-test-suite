@@ -16,6 +16,7 @@ import hotel.booking.api.model.BookingId;
 import hotel.booking.api.model.Token;
 import hotel.booking.api.model.TokenAuth;
 import hotel.booking.api.utils.ConfigManager;
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -56,7 +57,7 @@ public class BookingHelper {
 		return bookingIds;
 	}
 	
-	public Booking getBooking(int id) {
+	public Booking getBooking(int id, boolean isInvalidBookingId) {
 		Response response = RestAssured
 				.given()
 				.log().all()
@@ -65,28 +66,37 @@ public class BookingHelper {
 				.get(RestEndpoints.GET_BOOKING)
 				.thenReturn();
 		
-		assertEquals(HttpStatus.SC_OK, response.getStatusCode(), "Get booking details based on ID response code");
+		if(!isInvalidBookingId) {
+			assertEquals(HttpStatus.SC_NOT_FOUND, response.getStatusCode(), "Get booking by invalid booking id response code");
+			return null;	
+		}
 		
-		Type type = new TypeReference<Booking>() {}.getType();
-		return response.as(type);
+		assertEquals(HttpStatus.SC_OK, response.getStatusCode(), "Get booking details based on ID response code");
+		return response.as(new TypeReference<Booking>() {}.getType());
+		
 	}
-	
-	public BookingConfirmation createBooking(Booking booking) {
+
+	@Step("Send create booking POST request")
+	public BookingConfirmation createBooking(Booking booking, boolean isValidRequest) {
 		Response response = RestAssured
 				.given()
-				.log().all()
+				.log().all(true)
 				.contentType(ContentType.JSON)
 				.body(booking)
 				.post(RestEndpoints.CREATE_BOOKING)
 				.thenReturn();
-		
+
+		if(!isValidRequest) {
+			assertEquals(HttpStatus.SC_INTERNAL_SERVER_ERROR, response.getStatusCode(), "Create booking failure response code");
+			return null;
+		}
+
 		assertEquals(HttpStatus.SC_OK, response.getStatusCode(), "Create booking response code");
+		return response.as(new TypeReference<BookingConfirmation>(){}.getType());		
 		
-		Type type = new TypeReference<BookingConfirmation>(){}.getType();
-		return response.as(type);
 	}
 	
-	public Booking updateBooking(int id, Booking booking, Token token) {
+	public Booking updateBooking(int id, Booking booking, Token token, boolean isValidRequestData) {
 		Response response = RestAssured
 				.given()
 				.log().all()
@@ -98,8 +108,12 @@ public class BookingHelper {
 				.put(RestEndpoints.UPDATE_BOOKING)
 				.thenReturn();
 		
-		assertEquals(HttpStatus.SC_OK, response.getStatusCode(), "Update booking response code");
+		if(!isValidRequestData) {
+			assertEquals(HttpStatus.SC_BAD_REQUEST, response.getStatusCode(), "Update booking bad request data response code");
+			return null;
+		}
 		
+		assertEquals(HttpStatus.SC_OK, response.getStatusCode(), "Update booking response code");
 		return response.as(new TypeReference<Booking>(){}.getType());
 	}
 	
@@ -120,7 +134,7 @@ public class BookingHelper {
 		return response.as(new TypeReference<Booking>(){}.getType());
 	}
 
-	public String deleteBooking(int id, Token token) {
+	public String deleteBooking(int id, Token token, boolean isValidBookingId) {
 		Response response = RestAssured
 				.given()
 				.log().all()
@@ -130,8 +144,12 @@ public class BookingHelper {
 				.delete(RestEndpoints.DELETE_BOOKING)
 				.thenReturn();
 		
-		assertEquals(HttpStatus.SC_CREATED, response.getStatusCode(), "Delete booking response code");
-		
+		if(isValidBookingId) {
+			assertEquals(HttpStatus.SC_CREATED, response.getStatusCode(), "Delete booking response code");
+		} else {
+			assertEquals(HttpStatus.SC_METHOD_NOT_ALLOWED, response.getStatusCode(), "Delete booking invalid booking id response code");
+		}
+				
 		return response.getBody().asString();
 	}
 }

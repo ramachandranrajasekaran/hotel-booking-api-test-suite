@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import hotel.booking.api.fixtures.HotelBookingFixture;
 import hotel.booking.api.model.BookingId;
 
 public class TestGetBookingIds extends HotelBookingFixture {

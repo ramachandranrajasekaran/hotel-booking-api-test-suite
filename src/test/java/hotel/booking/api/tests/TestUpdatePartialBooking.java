@@ -12,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import hotel.booking.api.fixtures.HotelBookingFixture;
 import hotel.booking.api.model.Booking;
 import hotel.booking.api.model.Token;
 
@@ -19,7 +20,7 @@ public class TestUpdatePartialBooking extends HotelBookingFixture {
 	
 	@Test
 	public void testGetAllBookingIds() {
-		int bookingId = bookingHelper.createBooking(booking).getBookingid();
+		int bookingId = bookingHelper.createBooking(booking, true).getBookingid();
 		Token token = bookingHelper.getToken(tokenAuth);
 		
 		Booking bookingFetched = bookingHelper.partialUpdateBooking(bookingId, partialUpdateBooking, token);

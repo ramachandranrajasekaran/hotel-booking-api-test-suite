@@ -12,15 +12,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import hotel.booking.api.fixtures.HotelBookingFixture;
 import hotel.booking.api.model.Booking;
 
 public class TestGetBooking extends HotelBookingFixture {
 	
 	@Test
-	public void testGetAllBookingIds() {
-		int bookingId = bookingHelper.createBooking(booking).getBookingid();
+	public void testGetBookingById() {
+		int bookingId = bookingHelper.createBooking(booking, true).getBookingid();
 		
-		Booking bookingFetched = bookingHelper.getBooking(bookingId);
+		Booking bookingFetched = bookingHelper.getBooking(bookingId, true);
 		assertAll(
 				() -> assertEquals(FIRSTNAME, bookingFetched.getFirstname()),
 				() -> assertEquals(LASTNAME, bookingFetched.getLastname()),
@@ -30,6 +31,12 @@ public class TestGetBooking extends HotelBookingFixture {
 				() -> assertEquals(CHECK_IN, bookingFetched.getBookingdates().getCheckin()),
 				() -> assertEquals(CHECK_OUT, bookingFetched.getBookingdates().getCheckout())
 				);
+	}
+	
+	@Test
+	public void testGetBookingByInvalidId() {
+		int bookingId = Integer.MIN_VALUE;
+		bookingHelper.getBooking(bookingId, false);
 	}
 
 }
