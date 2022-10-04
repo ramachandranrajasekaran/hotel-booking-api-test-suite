@@ -52,4 +52,10 @@ public class TokenAuth {
 		this.additionalProperties.put(name, value);
 	}
 
+	@Override
+	public String toString() {
+		return "TokenAuth [username=" + username + ", password=" + password + ", additionalProperties="
+				+ additionalProperties + "]";
+	}
+
 }

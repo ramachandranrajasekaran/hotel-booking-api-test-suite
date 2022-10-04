@@ -15,11 +15,24 @@ import org.junit.jupiter.api.Test;
 import hotel.booking.api.fixtures.HotelBookingFixture;
 import hotel.booking.api.model.Booking;
 import hotel.booking.api.model.Token;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 
+@Epic("Need to develop Booking APIs")
+@Feature("Partial Update Booking API")
+@Owner("Ramachandran Rajasekaran")
 public class TestUpdatePartialBooking extends HotelBookingFixture {
 	
 	@Test
-	public void testGetAllBookingIds() {
+	@Story("User should be able to partially update the booking based on the partial booking details sent")
+	@Severity(SeverityLevel.CRITICAL)
+	@Description("To verify the partial update with valid booking data")
+	public void testUpdatePartialBooking() {
 		int bookingId = bookingHelper.createBooking(booking, true).getBookingid();
 		Token token = bookingHelper.getToken(tokenAuth);
 		

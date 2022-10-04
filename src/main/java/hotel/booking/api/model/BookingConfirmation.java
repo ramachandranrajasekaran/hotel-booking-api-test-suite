@@ -52,4 +52,8 @@ public class BookingConfirmation {
 		this.additionalProperties.put(name, value);
 	}
 
+	@Override
+	public String toString() {
+		return "BookingConfirmation [bookingid=" + bookingid + ", booking=" + booking + "]";
+	}
 }

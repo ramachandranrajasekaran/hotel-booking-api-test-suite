@@ -16,6 +16,7 @@ import hotel.booking.api.model.BookingId;
 import hotel.booking.api.model.Token;
 import hotel.booking.api.model.TokenAuth;
 import hotel.booking.api.utils.ConfigManager;
+import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -26,7 +27,9 @@ public class BookingHelper {
 	public BookingHelper() {
 		RestAssured.baseURI = ConfigManager.getInstance().getProperty("baseUrl");
 	}
-	
+
+	@Step("Send request to get authentication token")
+	@Attachment
 	public Token getToken(TokenAuth tokenAuth) {
 		Response response = RestAssured
 				.given()
@@ -40,7 +43,9 @@ public class BookingHelper {
 		
 		return response.as(new TypeReference<Token>(){}.getType());
 	}
-	
+
+	@Step("Send get booking ids request")
+	@Attachment
 	public List<BookingId> getBookingIds() {
 		Response response = RestAssured
 				.given()
@@ -56,7 +61,9 @@ public class BookingHelper {
 		List<BookingId> bookingIds = response.as(type);
 		return bookingIds;
 	}
-	
+
+	@Step("Sent get booking details request")
+	@Attachment
 	public Booking getBooking(int id, boolean isInvalidBookingId) {
 		Response response = RestAssured
 				.given()
@@ -77,6 +84,7 @@ public class BookingHelper {
 	}
 
 	@Step("Send create booking POST request")
+	@Attachment
 	public BookingConfirmation createBooking(Booking booking, boolean isValidRequest) {
 		Response response = RestAssured
 				.given()
@@ -95,7 +103,9 @@ public class BookingHelper {
 		return response.as(new TypeReference<BookingConfirmation>(){}.getType());		
 		
 	}
-	
+
+	@Step("Send update booking details request")
+	@Attachment
 	public Booking updateBooking(int id, Booking booking, Token token, boolean isValidRequestData) {
 		Response response = RestAssured
 				.given()
@@ -116,7 +126,9 @@ public class BookingHelper {
 		assertEquals(HttpStatus.SC_OK, response.getStatusCode(), "Update booking response code");
 		return response.as(new TypeReference<Booking>(){}.getType());
 	}
-	
+
+	@Step("Send partial update booking request")
+	@Attachment
 	public Booking partialUpdateBooking(int id, Booking booking, Token token) {
 		Response response = RestAssured
 				.given()
@@ -134,6 +146,8 @@ public class BookingHelper {
 		return response.as(new TypeReference<Booking>(){}.getType());
 	}
 
+	@Step("Send delete booking request")
+	@Attachment
 	public String deleteBooking(int id, Token token, boolean isValidBookingId) {
 		Response response = RestAssured
 				.given()

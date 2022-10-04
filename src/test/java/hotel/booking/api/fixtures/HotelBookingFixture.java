@@ -17,7 +17,6 @@ import hotel.booking.api.helpers.BookingHelper;
 import hotel.booking.api.model.Booking;
 import hotel.booking.api.model.Bookingdates;
 import hotel.booking.api.model.TokenAuth;
-import io.qameta.allure.Step;
 
 public class HotelBookingFixture {
 	
@@ -26,7 +25,7 @@ public class HotelBookingFixture {
 	protected Booking partialUpdateBooking;
 	protected TokenAuth tokenAuth;
 	protected BookingHelper bookingHelper;
-	
+
 	public HotelBookingFixture() {
 		init();
 		createBooking();
@@ -35,7 +34,6 @@ public class HotelBookingFixture {
 		partialUpdateBooking();
 	}
 
-	@Step("Config and test data setup")
 	private void init() {
 		bookingHelper = new BookingHelper();
 		booking = new Booking();

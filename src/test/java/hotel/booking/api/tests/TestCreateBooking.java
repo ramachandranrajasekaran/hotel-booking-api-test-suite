@@ -21,10 +21,22 @@ import hotel.booking.api.fixtures.HotelBookingFixture;
 import hotel.booking.api.model.Booking;
 import hotel.booking.api.model.BookingConfirmation;
 import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Stories;
+import io.qameta.allure.Story;
 
+@Epic("Need to develop Booking APIs")
 @Feature("Create Booking API")
+@Owner("Ramachandran Rajasekaran")
+@Severity(SeverityLevel.NORMAL)
 public class TestCreateBooking extends HotelBookingFixture {
+
+	@Story("User should be able to successfully create a booking on providing all the needed details")
+	@Severity(SeverityLevel.BLOCKER)
 	@Test
 	@Description("To verify the create booking with valid booking details")
 	public void testCreateBooking() {
@@ -41,7 +53,13 @@ public class TestCreateBooking extends HotelBookingFixture {
 				() -> assertEquals(CHECK_OUT, booking.getBookingdates().getCheckout())
 				);
 	}
-	
+
+	@Stories({@Story("User should be able to successfully create booking on providing empty firstname"),
+			@Story("User should be able to successfully create booking on providing space firstname"),
+			@Story("User should be able to successfully create booking on providing tab firstname"),
+			@Story("User should be able to successfully create booking on providing line break firstname"),
+	})
+	@Severity(SeverityLevel.MINOR)
 	@ParameterizedTest
 	@Description("To verify create booking with different first name values like empty, space, tab and line break")
 	@EmptySource
@@ -62,6 +80,8 @@ public class TestCreateBooking extends HotelBookingFixture {
 				);
 	}
 	
+	@Story("User should be able to successfully create booking on providing null firstname")
+	@Severity(SeverityLevel.MINOR)
 	@ParameterizedTest
 	@Description("To verify create booking with null firstname value")
 	@NullSource
@@ -69,7 +89,9 @@ public class TestCreateBooking extends HotelBookingFixture {
 		booking.setFirstname(firstName);
 		bookingHelper.createBooking(booking, false);
 	}
-	
+
+	@Story("User should get error response when trying to book with insufficient details")
+	@Severity(SeverityLevel.CRITICAL)
 	@Test
 	@Description("To verify create booking with incomplete booking details")
 	public void testCreateBookingfailure() {

@@ -40,4 +40,8 @@ public class BookingId {
 		this.additionalProperties.put(name, value);
 	}
 
+	@Override
+	public String toString() {
+		return "BookingId [bookingid=" + bookingid + "]";
+	}
 }
